@@ -18,7 +18,8 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <stdarg.h>
-#include "ircbot.h"
+
+#include "io.h"
 
 #define HOST_NAME "irc.rizon.net"
 #define PORT "6667"
@@ -77,8 +78,8 @@ int main(int argc, char* argv[])
 	/*
 	 sends USER and NICk details.
 	 */
-	sM("USER %s * * :%s", USER, USER);
-	sM("NICK %s", NICK);
+	send_user(USER);
+	send_nick(NICK);
 	printf("Sent USER and NICK details..\n");
 
 	/*
@@ -95,45 +96,31 @@ int main(int argc, char* argv[])
 		 */
 		if (strstr(rbuffer, "001"))
 		{
-			sM("JOIN %s", CHANNEL);
+			send_message("JOIN %s", CHANNEL);
 			memset(wbuffer, 0, BUFF_SIZE);
 		}
 		if (strstr(rbuffer, "PING"))
 		{
 			char* tok = strtok(rbuffer, "PING ");
-			sM("PONG %s", tok);
+			send_message("PONG %s", tok);
 			memset(wbuffer, 0, BUFF_SIZE);
 		}
 		if (strstr(rbuffer, "rofl"))
 		{
-			sM("PRIVMSG " CHANNEL " :what's so funny?.");
+			send_message("PRIVMSG " CHANNEL " :what's so funny?.");
 			memset(wbuffer, 0, BUFF_SIZE);
 		}
 		if (strstr(rbuffer, "quit"))
 		{
-			sM("PRIVMSG " CHANNEL " :bye guys.");
+			send_message("PRIVMSG " CHANNEL " :bye guys.");
 			memset(wbuffer, 0, BUFF_SIZE);
 			break;
 		}
-		/* "cleans" the read buffer. */
+		/*
+		 "cleans" the read buffer.
+		 */
 		memset(rbuffer, 0, BUFF_SIZE);
 	}
 	freeaddrinfo(res);
 	return EXIT_SUCCESS;
-}
-
-/*
- sends a msg to the server.
- */
-void sM(char* format, ...)
-{
-	/* varargs */
-	va_list ap;
-	va_start(ap, format);
-	vsnprintf(wbuffer, BUFF_SIZE, format, ap);
-	va_end(ap);
-
-	strcat(wbuffer, "\r\n"); /* flushes the stream */
-	printf("<< %s", wbuffer); /* simply prints out all output */
-	write(sockfd, wbuffer, strlen(wbuffer)); /* writes the buffer */
 }
