@@ -1,7 +1,14 @@
 CIRC Bot - An IRC bot written in C.
+Purpose: Educational (as always with my projects).
 
 Contributions are welcome. :)
 
 Usage:
-- gcc -o ircbot *.c
-- ./ircbot
+- gcc -o ./bin/ircbot ./src/*.c
+- ./bin/ircbot
+
+Large thanks to these following websites for information and example code:
+	http://3ethicalhackers.com/showthread.php?tid=1007
+	https://bbs.archlinux.org/viewtopic.php?id=64254
+	http://beej.us/guide/bgnet/output/html/singlepage/bgnet.html
+
