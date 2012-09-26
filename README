@@ -1,1 +1,7 @@
 CIRC Bot - An IRC bot written in C.
+
+Contributions are welcome. :)
+
+Usage:
+- gcc -o ircbot *.c
+- ./ircbot
