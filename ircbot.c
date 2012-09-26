@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
 			memset(wbuffer, 0, BUFF_SIZE);
 			break;
 		}
-		/* "cleans" the read buffer */
+		/* "cleans" the read buffer. */
 		memset(rbuffer, 0, BUFF_SIZE);
 	}
 	freeaddrinfo(res);
