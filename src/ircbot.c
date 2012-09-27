@@ -20,12 +20,13 @@
 #include <stdarg.h>
 
 #include "io.h"
+#include "utils.h"
 
 #define HOST_NAME "irc.rizon.net"
 #define PORT "6667"
 #define CHANNEL "#skyrealm"
-#define USER "wcircbot"
-#define NICK "`whac_"
+#define USER "circbot"
+#define NICK "`circ_"
 
 /*
  the main entry point.
@@ -87,9 +88,25 @@ int main(int argc, char* argv[])
 	 */
 	while (recv_sts = recv(sockfd, rbuffer, sizeof(rbuffer), 0))
 	{
+		char* token[1024];
+		int i = 0, j = 0;
 		if (recv_sts < 1)
 			break;
 		printf("%s", rbuffer);
+
+		/*
+		token[0] = strtok(rbuffer, " ");
+		while (token[i] != NULL)
+		{
+			i++;
+			token[i] = strtok(NULL, " ");
+		}
+
+		for (j = 0; j <= i - 1; j++)
+		{
+			printf("%d: %s\n", j, token[j]);
+		}
+		*/
 
 		/*
 		 command handling here, etc.
@@ -107,12 +124,18 @@ int main(int argc, char* argv[])
 		}
 		if (strstr(rbuffer, "rofl"))
 		{
-			send_message("PRIVMSG " CHANNEL " :what's so funny?.");
+			send_message("PRIVMSG " CHANNEL " :what's so funny?");
 			memset(wbuffer, 0, BUFF_SIZE);
 		}
-		if (strstr(rbuffer, "quit"))
+		if (strstr(rbuffer, "-rand"))
 		{
-			send_message("PRIVMSG " CHANNEL " :bye guys.");
+			int gen = rand_int(0, 100);
+			send_message("PRIVMSG " CHANNEL " :%d", gen);
+			memset(wbuffer, 0, BUFF_SIZE);
+		}
+		if (strstr(rbuffer, "-quit"))
+		{
+			send_message("PRIVMSG " CHANNEL " :bye guys. :(");
 			memset(wbuffer, 0, BUFF_SIZE);
 			break;
 		}
