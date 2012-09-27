@@ -134,6 +134,13 @@ int main(int argc, char* argv[])
 			raw_message("PRIVMSG " CHANNEL " :%d", gen);
 			memset(wbuffer, 0, BUFF_SIZE);
 		}
+		if (strstr(rbuffer, "-genstr"))
+		{
+			char* gen = rand_str(8);
+			raw_message("PRIVMSG " CHANNEL " :%s", gen);
+			memset(wbuffer, 0, BUFF_SIZE);
+			free(gen);
+		}
 		if (strstr(rbuffer, "-quit"))
 		{
 			raw_message("PRIVMSG " CHANNEL " :bye guys. :(");
