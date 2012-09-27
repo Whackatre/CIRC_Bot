@@ -113,29 +113,30 @@ int main(int argc, char* argv[])
 		 */
 		if (strstr(rbuffer, "001"))
 		{
-			send_message("JOIN %s", CHANNEL);
+			raw_message("JOIN %s", CHANNEL);
+			join_chan(CHANNEL);
 			memset(wbuffer, 0, BUFF_SIZE);
 		}
 		if (strstr(rbuffer, "PING"))
 		{
 			char* tok = strtok(rbuffer, "PING ");
-			send_message("PONG %s", tok);
+			raw_message("PONG %s", tok);
 			memset(wbuffer, 0, BUFF_SIZE);
 		}
 		if (strstr(rbuffer, "rofl"))
 		{
-			send_message("PRIVMSG " CHANNEL " :what's so funny?");
+			raw_message("PRIVMSG " CHANNEL " :what's so funny?");
 			memset(wbuffer, 0, BUFF_SIZE);
 		}
 		if (strstr(rbuffer, "-rand"))
 		{
 			int gen = rand_int(0, 100);
-			send_message("PRIVMSG " CHANNEL " :%d", gen);
+			raw_message("PRIVMSG " CHANNEL " :%d", gen);
 			memset(wbuffer, 0, BUFF_SIZE);
 		}
 		if (strstr(rbuffer, "-quit"))
 		{
-			send_message("PRIVMSG " CHANNEL " :bye guys. :(");
+			raw_message("PRIVMSG " CHANNEL " :bye guys. :(");
 			memset(wbuffer, 0, BUFF_SIZE);
 			break;
 		}

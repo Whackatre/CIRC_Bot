@@ -28,7 +28,7 @@ int sockfd;
  flushes the write buffer,
  sending it to the irc server.
  */
-void send_message(char* format, ...);
+void raw_message(char* format, ...);
 
 /*
  sends the username to the server.
@@ -39,3 +39,23 @@ void send_user(char* usr);
  sends the desired nickname to the server.
  */
 void send_nick(char* nick);
+
+/*
+ joins a channel.
+ */
+void join_chan(char* chan);
+
+/*
+ sets a mode.
+ */
+void set_mode(char* chan, char* mode);
+
+/*
+ sets a mode to a user.
+ */
+void set_mode_usr(char* chan, char* mode, char* user);
+
+/*
+ performs a whois on a nick.
+ */
+void whois(char* nick);

@@ -10,7 +10,7 @@
 
 #include "io.h"
 
-void send_message(char* format, ...)
+void raw_message(char* format, ...)
 {
 	/* varargs */
 	va_list ap;
@@ -25,10 +25,30 @@ void send_message(char* format, ...)
 
 void send_user(char* usr)
 {
-	send_message("USER %s * * :%s", usr, usr);
+	raw_message("USER %s * * :%s", usr, usr);
 }
 
 void send_nick(char* nick)
 {
-	send_message("NICK %s", nick);
+	raw_message("NICK %s", nick);
+}
+
+void join_chan(char* chan)
+{
+	raw_message("JOIN %s\n", chan);
+}
+
+void set_mode(char* chan, char* mode)
+{
+	raw_message("MODE %s %s", chan, mode);
+}
+
+void set_mode_usr(char* chan, char* mode, char* user)
+{
+	raw_message("MODE %s %s %s", chan, mode, user);
+}
+
+void whois(char* nick)
+{
+	raw_message("WHOIS %s", nick);
 }
