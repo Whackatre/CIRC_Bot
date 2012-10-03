@@ -35,7 +35,10 @@ int main(int argc, char* argv[])
 {
 	struct hostent* server;
 	struct addrinfo hints, *res;
+	char** args;
+	size_t count = 0;
 	int recv_sts;
+	int str_it;
 
 	printf("====================\n");
 	printf("IRC Bot by Whackatre\n");
@@ -88,21 +91,30 @@ int main(int argc, char* argv[])
 	 */
 	while (recv_sts = recv(sockfd, rbuffer, sizeof(rbuffer), 0))
 	{
-		char* token[1024];
-		int i = 0, j = 0;
+		int i, j = 0;
 		if (recv_sts < 1)
 			break;
 		printf("%s", rbuffer);
 
-		strcpy(token, rbuffer);
+		char channel[64];
+		strcpy(channel, "");
+
+		args = str_split(rbuffer, " ", &count);
+		for (i = 0; i < count; i++)
+		{
+			printf("[%d]: %s\n", i, args[i]);
+		}
+
+		strcpy(channel, args[2]);
 
 		/*
 		 command handling here, etc.
 		 */
 		if (strstr(rbuffer, "001"))
 		{
-			raw_message("JOIN %s", CHANNEL);
+			// raw_message("JOIN %s", CHANNEL);
 			join_chan(CHANNEL);
+			join_chan("#helix"); // testing
 			memset(wbuffer, 0, BUFF_SIZE);
 		}
 		if (strstr(rbuffer, "PING"))
@@ -129,6 +141,11 @@ int main(int argc, char* argv[])
 			memset(wbuffer, 0, BUFF_SIZE);
 			free(gen);
 		}
+		if (strstr(rbuffer, "-chan"))
+		{
+			raw_message("PRIVMSG " CHANNEL " :I am talking to %s.", channel);
+			memset(wbuffer, 0, BUFF_SIZE);
+		}
 		if (strstr(rbuffer, "-quit"))
 		{
 			raw_message("PRIVMSG " CHANNEL " :bye guys. :(");
@@ -139,7 +156,16 @@ int main(int argc, char* argv[])
 		 "cleans" the read buffer.
 		 */
 		memset(rbuffer, 0, BUFF_SIZE);
+		for (str_it = 0; str_it < count; str_it++)
+		{
+			free(args[str_it]);
+		}
 	}
+	for (str_it = 0; str_it < count; str_it++)
+	{
+		free(args[str_it]);
+	}
+	free(args);
 	freeaddrinfo(res);
 	return EXIT_SUCCESS;
 }
