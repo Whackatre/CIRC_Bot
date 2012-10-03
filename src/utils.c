@@ -54,3 +54,46 @@ char* rand_str(int len)
 	gen[len] = '\0';
 	return gen;
 }
+
+char** str_split(const char* string, const char* const delimiter, size_t* count)
+{
+	const size_t stringLength = strlen(string);
+	const size_t delimiterLength = strlen(delimiter);
+	const char* i;
+	char** split = (char**) malloc((stringLength + 1) * sizeof(char*));
+	*count = 0;
+
+	for (i = 0; (i = strstr(string, delimiter)) != 0; string = i + delimiterLength)
+	{
+		const size_t length = i - string;
+		split[*count] = (char*) calloc(length + 1, sizeof(char));
+		strncpy(split[*count], string, length);
+		++*count;
+	}
+
+	split[*count] = (char*) calloc(strlen(string) + 1, sizeof(char));
+	strcpy(split[*count], string);
+	++*count;
+	split = (char**) realloc(split, *count * sizeof(char*));
+
+	return split;
+}
+
+char char_at(char* str, unsigned int idx)
+{
+	unsigned int i, len;
+	len = strlen(str);
+	if (idx > len)
+		return '\0';
+	return str[idx];
+}
+
+int idx_of(char* str, char c)
+{
+	unsigned int i, len;
+	len = strlen(str);
+	for (i = 0; i < len; i++)
+		if (str[i] == c)
+			return i;
+	return -1;
+}

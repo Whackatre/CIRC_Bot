@@ -22,7 +22,7 @@
 #include "io.h"
 #include "utils.h"
 
-#define HOST_NAME "irc.rizon.net"
+#define HOST_NAME "irc.gyrat.in"
 #define PORT "6667"
 #define CHANNEL "#skyrealm"
 #define USER "circbot"
@@ -94,19 +94,7 @@ int main(int argc, char* argv[])
 			break;
 		printf("%s", rbuffer);
 
-		/*
-		token[0] = strtok(rbuffer, " ");
-		while (token[i] != NULL)
-		{
-			i++;
-			token[i] = strtok(NULL, " ");
-		}
-
-		for (j = 0; j <= i - 1; j++)
-		{
-			printf("%d: %s\n", j, token[j]);
-		}
-		*/
+		strcpy(token, rbuffer);
 
 		/*
 		 command handling here, etc.
