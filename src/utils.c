@@ -97,3 +97,27 @@ int idx_of(char* str, char c)
 			return i;
 	return -1;
 }
+
+char* join(const char* s1, const char* s2)
+{
+	char* result = (char*) malloc(strlen(s1) + strlen(s2) + 1);
+	if (result)
+	{
+		strcpy(result, s1);
+		strcat(result, s2);
+	}
+	return result;
+}
+
+int starts_with(const char* str1, const char* str2)
+{
+	int i, len1, len2;
+	len1 = strlen(str1);
+	len2 = strlen(str2);
+	if (len2 < len1)
+		return 0;
+	for (i = 0; i < len2; i++)
+		if (!(str1[i] == str2[i]))
+			return 0;
+	return 1;
+}

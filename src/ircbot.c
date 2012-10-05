@@ -28,6 +28,8 @@
 #define USER "circbot"
 #define NICK "`circ_"
 
+#define WHAC ":whac!whac@skyrealm.net"
+
 /*
  the main entry point.
  */
@@ -97,15 +99,28 @@ int main(int argc, char* argv[])
 		printf("%s", rbuffer);
 
 		char channel[64];
+		char user[64];
+		strcpy(user, "");
 		strcpy(channel, "");
 
 		args = str_split(rbuffer, " ", &count);
+		/*
 		for (i = 0; i < count; i++)
 		{
 			printf("[%d]: %s\n", i, args[i]);
 		}
+		*/
 
+		strcpy(user, args[0]);
 		strcpy(channel, args[2]);
+
+		/*
+		 testing.
+		 */
+		if (!starts_with(channel, "#"))
+		{
+			strcpy(channel, "NOT_A_CHAN");
+		}
 
 		/*
 		 command handling here, etc.
@@ -143,10 +158,14 @@ int main(int argc, char* argv[])
 		}
 		if (strstr(rbuffer, "-chan"))
 		{
-			raw_message("PRIVMSG " CHANNEL " :I am talking to %s.", channel);
+			char* chname = join("PRIVMSG ", channel);
+			chname = join(chname, " :I am talking to ");
+			chname = join(chname, channel);
+			raw_message(chname);
 			memset(wbuffer, 0, BUFF_SIZE);
+			free(chname);
 		}
-		if (strstr(rbuffer, "-quit"))
+		if (strstr(rbuffer, "-quit") && strstr(user, WHAC))
 		{
 			raw_message("PRIVMSG " CHANNEL " :bye guys. :(");
 			memset(wbuffer, 0, BUFF_SIZE);
@@ -160,6 +179,7 @@ int main(int argc, char* argv[])
 		{
 			free(args[str_it]);
 		}
+		free(args);
 	}
 	for (str_it = 0; str_it < count; str_it++)
 	{

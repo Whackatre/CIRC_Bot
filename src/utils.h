@@ -48,3 +48,14 @@ char char_at(char* str, unsigned int idx);
  not exist in the string.
  */
 int idx_of(char* str, char c);
+
+/*
+ joins a string.
+ */
+char* join(const char* s1, const char* s2);
+
+/*
+ if a string starts with
+ another string.
+ */
+int starts_with(const char* str1, const char* str2);
