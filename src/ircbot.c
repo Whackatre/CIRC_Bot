@@ -98,29 +98,20 @@ int main(int argc, char* argv[])
 			break;
 		printf("%s", rbuffer);
 
-		char channel[64];
-		char user[64];
+		char channel[128];
+		char type[128];
+		char user[128];
 		strcpy(user, "");
+		strcpy(type, "");
 		strcpy(channel, "");
 
 		args = str_split(rbuffer, " ", &count);
-		/*
-		for (i = 0; i < count; i++)
-		{
-			printf("[%d]: %s\n", i, args[i]);
-		}
-		*/
 
 		strcpy(user, args[0]);
+		strcpy(type, args[1]);
 		strcpy(channel, args[2]);
 
-		/*
-		 testing.
-		 */
-		if (!starts_with(channel, "#"))
-		{
-			strcpy(channel, "NOT_A_CHAN");
-		}
+		printf("Type: %s\n", type);
 
 		/*
 		 command handling here, etc.
